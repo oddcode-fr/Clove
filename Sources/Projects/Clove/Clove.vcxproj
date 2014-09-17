@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F64C186A-0860-4D33-93BC-9D342ED9B450}</ProjectGuid>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <Keyword>ManagedCProj</Keyword>
     <RootNamespace>Clove</RootNamespace>
   </PropertyGroup>
@@ -20,7 +20,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
     <CLRSupport>true</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -194,6 +194,8 @@
     <ClInclude Include="Bitmap32.h" />
     <ClInclude Include="Buffer32.h" />
     <ClInclude Include="BasicRenderer32.h" />
+    <ClInclude Include="Color.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Agg\agg_arc.cpp" />
@@ -223,6 +225,7 @@
     <ClCompile Include="Agg\agg_vpgen_segmentator.cpp" />
     <ClCompile Include="Bitmap32.cpp" />
     <ClCompile Include="BasicRenderer32.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

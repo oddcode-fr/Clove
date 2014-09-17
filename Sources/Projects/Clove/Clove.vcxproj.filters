@@ -370,6 +370,8 @@
     <ClInclude Include="Bitmap32.h" />
     <ClInclude Include="Buffer32.h" />
     <ClInclude Include="BasicRenderer32.h" />
+    <ClInclude Include="Color.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Agg\agg_arc.cpp">
@@ -449,6 +451,7 @@
     </ClCompile>
     <ClCompile Include="Bitmap32.cpp" />
     <ClCompile Include="BasicRenderer32.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Agg">

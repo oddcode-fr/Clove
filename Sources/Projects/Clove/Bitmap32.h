@@ -27,22 +27,22 @@ namespace Clove
 	public ref class Bitmap32
 	{
 	private:
-		Buffer32^ m_buffer;
-		UInt32 m_x;
-		UInt32 m_y;
+		Int32 m_x;
+		Int32 m_y;
 
 	internal:
+		Buffer32^ m_buffer;
 		NativeBitmap32* m_bitmap;
 
 	public:
 	
-		Bitmap32(UInt32 width, UInt32 height);
-		Bitmap32(Bitmap32^ parent, UInt32 x, UInt32 y, UInt32 width, UInt32 height);
+		Bitmap32(Int32 width, Int32 height);
+		Bitmap32(Bitmap32^ parent, Int32 x, Int32 y, Int32 width, Int32 height);
 
 		~Bitmap32();
 
-		property UInt32 Width { UInt32 get() { return m_bitmap->m_pixf.width(); } }
-		property UInt32 Height { UInt32 get() { return m_bitmap->m_pixf.height(); } }
+		property Int32 Width { Int32 get() { return m_bitmap->m_pixf.width(); } }
+		property Int32 Height { Int32 get() { return m_bitmap->m_pixf.height(); } }
 
 		void Save(String^ filename);
 	};

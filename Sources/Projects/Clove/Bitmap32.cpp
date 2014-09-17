@@ -11,7 +11,7 @@ using namespace System;
 namespace Clove
 {
 
-	Bitmap32::Bitmap32(UInt32 width, UInt32 height)
+	Bitmap32::Bitmap32(Int32 width, Int32 height)
 	{
 		m_buffer = gcnew Buffer32(width, height);
 		m_x = 0;
@@ -25,7 +25,7 @@ namespace Clove
 		);
 	}
 
-	Bitmap32::Bitmap32(Bitmap32^ parent, UInt32 x, UInt32 y, UInt32 width, UInt32 height)
+	Bitmap32::Bitmap32(Bitmap32^ parent, Int32 x, Int32 y, Int32 width, Int32 height)
 	{
 		m_buffer = parent->m_buffer;
 		m_x = parent->m_x + x;

@@ -12,22 +12,35 @@ namespace Test
         [STAThread]
         static void Main(string[] args)
         {
-            var b = new Bitmap32(640, 480);
-
-            for (uint x = 0; x < 5; x++)
+            using (var w = new GameWindow())
             {
-                for (uint y = 0; y < 5; y++)
-                {
-                    var b2 = new Bitmap32(b, x * 30, y * 30, 20, 20);
-                    var r = new BasicRenderer32(b2);
-                }
+                
+                w.Open();
             }
 
-            b.Save("out.png");
+            var random = new Random();
+            var bm = new Bitmap32(640, 480);
+            var rd = new BasicRenderer32(bm);
+            
+            rd.Clear(new Color32(0x20, 0x20, 0x20, 0xFF));
 
-            var b3 = new Bitmap32(b, 0, 0, 128, 128);
+            rd.FillColor = new Color32(0xFF, 0x00, 0x00, 0x30);
+            for (int i = 0; i < 100; i++)
+            {
+                var r = random.Next(50) + 10;
+                var x = random.Next(bm.Width - r * 2) + r;
+                var y = random.Next(bm.Height - r * 2) + r;
 
-            b3.Save("out2.png");
+                rd.SolidElipse(
+                    x, y, r, r
+                );
+            }
+
+            //DisplayWindow.Show(bm);
+
+            bm.Save("out.png");
+
+            new Bitmap32(bm, 0, 0, 128, 128).Save("out2.png");
         }
     }
 }
