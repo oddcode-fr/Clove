@@ -2,6 +2,7 @@
 #define __WINDOW_H
 
 #include <Windows.h>
+#include <Windowsx.h>
 
 #include "Bitmap32.h"
 
@@ -9,6 +10,15 @@ using namespace System;
 
 namespace Clove
 {
+	public enum class WindowStyle
+	{
+		Naked,
+		Fixed,
+		FixedWithTitle,
+		Resizeable,
+		ResizeableWithTitle
+	};
+
 	public ref class Window abstract
 	{
 	private:
@@ -24,7 +34,7 @@ namespace Clove
 		
 	public:
 
-		Window();
+		Window(WindowStyle style);
 		~Window();
 
 		static property Window^ Current { Window^ get() { return m_current; } }
@@ -41,6 +51,7 @@ namespace Clove
 		virtual void OnCloseRequest() { Close(); }
 		virtual void OnSizeChanged(int width, int height) { }
 		virtual void OnDrawRequest() { }
+		virtual void OnMouseButtonDown(int x, int y) { }
 		
 		void SetSize(int width, int height);
 		void SetTitle(String^ title);
@@ -55,6 +66,11 @@ namespace Clove
 		double m_averageSecondsPerFrame;
 
 	protected:
+
+		AnimationWindow(WindowStyle style) : Window(style)
+		{
+
+		}
 
 		property double FramesPerSecond { double get() { return 1.0 / m_averageSecondsPerFrame; } }
 
@@ -100,14 +116,18 @@ namespace Clove
 	private:
 		Bitmap32^ m_bitmap;
 		
-		DisplayWindow(Bitmap32^ bitmap) : m_bitmap(bitmap)
+		DisplayWindow(Bitmap32^ bitmap) :
+			Window(WindowStyle::FixedWithTitle),
+			m_bitmap(bitmap)
 		{
+
 		}
 
 	public:
 		static void Show(Bitmap32^ bitmap)
 		{
 			DisplayWindow^ window = gcnew DisplayWindow(bitmap);
+			window->SetTitle(String::Format("{0}x{1}", bitmap->Width, bitmap->Height));
 			window->SetSize(bitmap->Width, bitmap->Height);
 			window->Open();
 		}

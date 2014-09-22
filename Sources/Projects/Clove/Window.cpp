@@ -3,9 +3,10 @@
 
 #include "Window.h"
 
+
 namespace Clove
 {
-	Window::Window()
+	Window::Window(WindowStyle style)
 	{
 		m_proc = gcnew WindowProcDelegate(this, &Window::Proc);
 
@@ -25,13 +26,33 @@ namespace Clove
 
 		m_class = RegisterClass(&wc);
 
+		DWORD s = WS_POPUP;
+
+		switch (style)
+		{
+		case WindowStyle::Fixed:
+			s = WS_BORDER;
+			break;
+		case WindowStyle::FixedWithTitle:
+			s = WS_CAPTION | WS_SYSMENU;
+			break;
+		case WindowStyle::Resizeable:
+			s = WS_THICKFRAME;
+			break;
+		case WindowStyle::ResizeableWithTitle:
+			s = WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
+			break;
+		}
+
 		m_handle = CreateWindow(
 			(LPCTSTR)m_class,
 			L"",
-			WS_OVERLAPPEDWINDOW,
+			s,
 			0, 0, 800, 600,
 			NULL, NULL, instance, NULL
 		);
+
+		SetWindowRgn(m_handle, NULL, FALSE);
 	}
 
 	Window::~Window()
@@ -62,6 +83,10 @@ namespace Clove
 			BeginPaint(hwnd, &ps);
 			EndPaint(hwnd, &ps);
 			OnDrawRequest(); // TODO invalidated rect
+			return 0;
+
+		case WM_LBUTTONDOWN:
+			OnMouseButtonDown(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 			return 0;
 
 		default:

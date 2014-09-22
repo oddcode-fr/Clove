@@ -8,7 +8,7 @@ namespace Test
 {
     public class GameWindow : AnimationWindow
     {
-        private class Ball
+        private class Particle
         {
             public double x;
             public double y;
@@ -18,21 +18,21 @@ namespace Test
             public Color32 color;
         }
 
-        private List<Ball> m_balls;
+        private List<Particle> m_particles = new List<Particle>();
 
-        public GameWindow()
+        private void AddRandomParticles(int count, double? x = null, double? y = null)
         {
             var rnd = new Random();
-            m_balls = new List<Ball>();
-            for (int i = 0; i < 1000; i++)
+
+            for (int i = 0; i < count; i++)
             {
-                m_balls.Add(new Ball()
+                m_particles.Add(new Particle()
                 {
-                    x = rnd.NextDouble() * 500 - 100,
-                    y = rnd.NextDouble() * 500 - 100,
+                    x = x.HasValue ? x.Value : rnd.NextDouble() * 500,
+                    y = y.HasValue ? y.Value : rnd.NextDouble() * 500,
                     vx = rnd.NextDouble() * 0.2 - 0.1,
                     vy = rnd.NextDouble() * 0.2 - 0.1,
-                    radius = rnd.NextDouble() * 10,
+                    radius = rnd.NextDouble() * 5,
                     color = new Color32(
                         (byte)(rnd.Next(155) + 100),
                         (byte)(rnd.Next(155) + 100),
@@ -43,25 +43,37 @@ namespace Test
             }
         }
 
+        public GameWindow() : base(WindowStyle.FixedWithTitle)
+        {
+            SetSize(600, 600);
+
+            AddRandomParticles(100);
+        }
+
+        protected override void OnMouseButtonDown(int x, int y)
+        {
+            AddRandomParticles(100, x, y);
+        }
 
         protected override void OnDrawRequest(Bitmap32 buffer, TimeSpan elapsed)
         {
-            SetTitle(string.Format("FPS: {0:0}", FramesPerSecond));
+            SetTitle(string.Format("FPS: {0:0}, Particles: {1}", FramesPerSecond, m_particles.Count));
 
             var rd = new BasicRenderer32(buffer);
 
-            rd.Clear(new Color32(0xFF, 0x50, 0x50, 0x80));
+            rd.Clear(new Color32(0x50, 0x50, 0x50, 0xFF));
 
-            foreach (var ball in m_balls)
+            foreach (var particle in m_particles)
             {
-                ball.x += ball.vx * elapsed.TotalMilliseconds;
-                ball.y += ball.vy * elapsed.TotalMilliseconds;
+                particle.x += particle.vx * elapsed.TotalMilliseconds;
+                particle.y += particle.vy * elapsed.TotalMilliseconds;
 
-                if (ball.x < 0 || ball.x >= buffer.Width) ball.vx = -ball.vx;
-                if (ball.y < 0 || ball.y >= buffer.Height) ball.vy = -ball.vy;
+                if (particle.x < 0 || particle.x >= buffer.Width) particle.vx = -particle.vx * 0.8;
+                if (particle.y < 0 || particle.y >= buffer.Height) particle.vy = -particle.vy * 0.8;
 
-                rd.FillColor = ball.color;
-                rd.SolidRectangle((int)(ball.x - ball.radius), (int)(ball.y - ball.radius), (int)(ball.x + ball.radius), (int)(ball.y + ball.radius));
+                rd.FillColor = particle.color;
+                rd.SolidElipse((int)particle.x, (int)particle.y, (int)particle.radius, (int)particle.radius);
+                //rd.SolidRectangle((int)(particle.x - particle.radius), (int)(particle.y - particle.radius), (int)(particle.x + particle.radius), (int)(particle.y + particle.radius));
             }
         }
 

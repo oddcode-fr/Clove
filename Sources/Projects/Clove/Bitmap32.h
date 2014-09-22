@@ -44,7 +44,9 @@ namespace Clove
 		property Int32 Width { Int32 get() { return m_bitmap->m_pixf.width(); } }
 		property Int32 Height { Int32 get() { return m_bitmap->m_pixf.height(); } }
 
+		array<Byte, 1>^ Save();
 		void Save(String^ filename);
+		static Bitmap32^ Load(array<Byte, 1>^ content);
 	};
 }
 
